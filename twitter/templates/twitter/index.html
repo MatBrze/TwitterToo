@@ -1,4 +1,20 @@
 {% extends 'twitter/base.html' %}
 {% block content %}
-   <h1>Witaj Świecie</h1>
+   {% for tweet in tweets %}
+       <article class="media content-section">
+           <div class="media-body">
+               <div class="article-metadata">
+                   <a href="#">
+                       <small class="text-muted">{{ tweet.creation_date|date:"F d, Y" }}</small>
+                   </a>
+                   <a href="#">
+                       <small class="text-muted">by {{ tweet.author }}</small>
+                   </a>
+               </div>
+               <p class="article-content">{{ tweet.content }}</p>
+           </div>
+       </article>
+    {% empty %}
+    <h2>Sorry, no tweets yet...</h2>
+   {% endfor %}
 {% endblock %}
