@@ -35,7 +35,7 @@ class RegisterView(views.View):
 
     def get(self, request):
         form = UserRegisterForm()
-        return render(request, 'register.html', {'form': form})
+        return render(request, 'twitter/register.html', {'form': form})
 
     def post(self, request):
         form = UserRegisterForm(request.POST)
@@ -43,5 +43,5 @@ class RegisterView(views.View):
             form.save()
             user = form.cleaned_data.get('username')
             messages.success(request, f'{user} Konto zostało utworzone! Zaloguj się')
-            return redirect('login')
-        return render(request, 'register.html', {'form': form})
+            return redirect('twitter:login')
+        return render(request, 'twitter/register.html', {'form': form})

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'twitter/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="container">
@@ -14,7 +14,7 @@
         </form>
         <div class="border-top pt-3">
             <small class="text-muted">
-                Posiadasz konto?<a class="ml-2" href="{% url 'login' %}">Zaloguj się</a>
+                Posiadasz konto?<a class="ml-2" href="{% url 'twitter:login' %}">Zaloguj się</a>
             </small>
         </div>
     </div>

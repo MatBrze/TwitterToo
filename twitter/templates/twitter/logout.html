@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'twitter/base.html' %}
 {% block content %}
     <div class="container">
         <h2>Zostałeś wylogowany</h2>
         <div class="border-top pt-3">
             <small class="text-muted">
-                <a href="{% url 'login' %}">Zaloguj się ponownie</a>
+                <a href="{% url 'twitter:login' %}">Zaloguj się ponownie</a>
             </small>
         </div>
     </div>
