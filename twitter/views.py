@@ -45,3 +45,11 @@ class RegisterView(views.View):
             messages.success(request, f'{user} Konto zostało utworzone! Zaloguj się')
             return redirect('twitter:login')
         return render(request, 'twitter/register.html', {'form': form})
+
+
+class ProfileView(LoginRequiredMixin, views.View):
+
+    def get(self, request):
+        tweets = models.Tweet.objects.filter(
+            author=request.user).order_by('-creation_date')
+        return render(request, 'twitter/profile.html', {'tweets': tweets})
