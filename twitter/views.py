@@ -3,12 +3,12 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django import views
 from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from django.contrib.auth.models import User
 
 from twitter import models
-from django.views.generic import CreateView
 from twitter import forms
 from .forms import UserRegisterForm
-# Create your views here.
 
 
 class MainWebPageView(views.View):
@@ -74,3 +74,13 @@ class TweetDetailView(views.View):
             form = forms.AddCommentForm()
         return render(request, 'twitter/tweet_detail.html',
                       {'tweet': tweet, 'add_comment': form})
+
+
+class AuthorDetailView(views.View):
+
+    def get(self, request, pk):
+        author = User.objects.get(pk=pk)
+        tweets = models.Tweet.objects.filter(
+            author=author).order_by('-creation_date')
+        return render(request, 'twitter/user_detail.html',
+                      {'tweets': tweets, 'author': author})
