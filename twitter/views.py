@@ -55,7 +55,7 @@ class ProfileView(LoginRequiredMixin, views.View):
         return render(request, 'twitter/profile.html', {'tweets': tweets})
 
 
-class TweetDetailView(views.View):
+class TweetDetailView(LoginRequiredMixin, views.View):
 
     def get(self, request, pk):
         tweet = models.Tweet.objects.get(pk=pk)

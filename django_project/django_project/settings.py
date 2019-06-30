@@ -122,7 +122,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'twitter:profile'
+LOGIN_URL = 'login'
 
 AVATAR_THUMB_FORMAT = 'PNG'
 
