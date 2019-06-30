@@ -124,3 +124,7 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/'
 
+AVATAR_THUMB_FORMAT = 'PNG'
+
+MEDIA_URL = '/media/'
+
