@@ -1,0 +1,31 @@
+{% extends 'twitter/base.html' %}
+{% load crispy_forms_tags %}
+{% load avatar_tags %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                {% avatar tweet.author 25 class="rounded-circle" id="user_avatar" %}
+                <small class="text-muted">{{ tweet.author }}</small>
+                <small class="text-muted">{{ tweet.creation_date|date:"F d, Y" }}</small>
+            </div>
+            <p class="article-content">{{ tweet.content }}</p>
+            <form action="" method="POST">
+                {% csrf_token %}
+                    <small class="text-muted">Add comment:</small>
+                    <small class="text-muted">{{ add_comment|crispy }}</small>
+                    <button class="btn btn-outline-info" type="submit">Add</button>
+            </form>
+            <div>
+                {% if tweet.comment_set.all %}
+                    <small class="text-muted">Comments: ({{ tweet.comment_set.all.count }})</small><br>
+                {% for comment in tweet.comment_set.all %}
+                   <small class="text-muted">{{ comment.author.username }}: </small>{{ comment.content }}<br>
+                {% endfor %}
+                {% else %}
+                    <small class="text-muted">Be the first to comment.</small>
+               {% endif %}
+            </div>
+        </div>
+    </article>
+{% endblock content %}

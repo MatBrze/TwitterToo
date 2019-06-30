@@ -1,20 +1,30 @@
 {% extends 'twitter/base.html' %}
+{% load avatar_tags %}
 {% block content %}
-   {% for tweet in tweets %}
-       <article class="media content-section">
-           <div class="media-body">
-               <div class="article-metadata">
-                   <a href="#">
-                       <small class="text-muted">{{ tweet.creation_date|date:"F d, Y" }}</small>
-                   </a>
-                   <a href="#">
-                       <small class="text-muted">by {{ tweet.author }}</small>
-                   </a>
-               </div>
-               <p class="article-content">{{ tweet.content }}</p>
-           </div>
-       </article>
-    {% empty %}
-    <h2>Sorry, no tweets yet...</h2>
-   {% endfor %}
-{% endblock %}
+    {% for tweet in tweets %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    {% avatar tweet.author 25 class="rounded-circle" id="user_avatar" %}
+                    <a href="{% url 'twitter:tweet-detail' tweet.pk %}">
+                        <small class="text-muted">{{ tweet.creation_date|date:"F d, Y" }}</small>
+                    </a>
+                    <a href="{% url 'twitter:author-detail' tweet.author.pk %}">
+                        <small class="text-muted">by {{ tweet.author }}</small>
+                    </a>
+                </div>
+                <p class="article-content">{{ tweet.content }}</p>
+                <div>
+                    {% if tweet.comment_set.all %}
+                        <small class="text-muted">Comments: ({{ tweet.comment_set.all.count }})</small><br>
+                        {% for comment in tweet.comment_set.all %}
+                            {% avatar comment.author 25 class="rounded-circle" id="user_avatar" %}
+                            <small class="text-muted">{{ comment.author.username }}: </small>
+                            {{ comment.content|truncatechars:25 }}<br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

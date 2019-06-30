@@ -53,3 +53,24 @@ class ProfileView(LoginRequiredMixin, views.View):
         tweets = models.Tweet.objects.filter(
             author=request.user).order_by('-creation_date')
         return render(request, 'twitter/profile.html', {'tweets': tweets})
+
+
+class TweetDetailView(views.View):
+
+    def get(self, request, pk):
+        tweet = models.Tweet.objects.get(pk=pk)
+        add_comment = forms.AddCommentForm()
+        return render(request, 'twitter/tweet_detail.html',
+                      {'tweet': tweet, 'add_comment': add_comment})
+
+    def post(self, request, pk):
+        form = forms.AddCommentForm(request.POST)
+        tweet = models.Tweet.objects.get(pk=pk)
+        if form.is_valid():
+            content = form.cleaned_data.get('content')
+            new_comment = models.Comment(
+                content=content, author=request.user, tweet=tweet)
+            new_comment.save()
+            form = forms.AddCommentForm()
+        return render(request, 'twitter/tweet_detail.html',
+                      {'tweet': tweet, 'add_comment': form})

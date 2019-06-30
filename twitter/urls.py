@@ -13,4 +13,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='twitter/logout.html'), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('tweet/<int:pk>/', views.TweetDetailView.as_view(),
+         name='tweet-detail'),
 ]

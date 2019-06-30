@@ -20,3 +20,16 @@ class TweetForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea()
         }
+
+
+class AddCommentForm(forms.ModelForm):
+    content = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'rows': 1, 'cols': 80}),
+        max_length=models.TWITTER_MAXIMUM_COMMENT_LENGTH,
+        label='')
+
+    class Meta:
+        model = models.Comment
+        fields = ['content']
+        labels = False
