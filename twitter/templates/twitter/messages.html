@@ -1,0 +1,54 @@
+{% extends 'twitter/base.html' %}
+{% load avatar_tags %}
+{% block content %}
+    <h1>Messages</h1>
+        <a class="btn btn-outline-info" href="{% url 'twitter:compose-message' %}">New message</a>
+        <p></p>
+    {% block messages %}
+        <h2>Received messages</h2>
+        {% if received %}
+            {% for message in received %}
+                <article class="media content-section">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            From: <a class="mr-2" href="{% url 'twitter:author-detail' message.sender.pk %}">{% avatar message.sender 25 class="rounded-circle" id="user_avatar" %} {{ message.sender }}</a>
+                            <small class="text-muted">{{ message.date_send|date:"F d, Y" }}</small>
+                        </div>
+                            <div class="article-metadata">
+                                {% if not message.read %}
+                                    <b><a href="{% url 'twitter:message-detail' message.pk %}">{{ message.title }}</a></b>
+                                {% else %}
+                                    <a href="{% url 'twitter:message-detail' message.pk %}">{{ message.title }}</a>
+                                {% endif %}
+                            </div>
+                    </div>
+                </article>
+            {% endfor %}
+        {% else %}
+            <p>Your mailbox is empty</p>
+        {% endif %}
+        <h2>Sent messages</h2>
+        {% if sent %}
+            {% for message in sent %}
+                <article class="media content-section">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            To: <a class="mr-2" href="{% url 'twitter:author-detail' message.recipient.pk %}" >{% avatar message.recipient 25 class="rounded-circle" id="user_avatar" %} {{ message.recipient }}</a>
+                            <small class="text-muted">{{ message.date_send|date:"F d, Y" }}</small>
+                        </div>
+                            <div class="article-metadata">
+                                <a href="{% url 'twitter:message-detail' message.pk %}">{{ message.title }}</a>
+                            </div>
+                    </div>
+                </article>
+            {% endfor %}
+        {% else %}
+            <p>No messages sent.
+                <a href="{% url 'twitter:compose-message' %}">Send a new message</a>
+            </p>
+        {% endif %}
+    {% endblock messages %}
+{% endblock content %}
+
+
+

@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django import views
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -84,3 +84,36 @@ class AuthorDetailView(views.View):
             author=author).order_by('-creation_date')
         return render(request, 'twitter/user_detail.html',
                       {'tweets': tweets, 'author': author})
+
+
+class MessageListView(LoginRequiredMixin, views.View):
+    def get(self, request):
+        received = models.Message.objects.filter(
+            recipient=request.user, blocked=False).order_by('-date_send')
+        sent = models.Message.objects.filter(
+            sender=request.user, blocked=False).order_by('-date_send')
+        return render(request, 'twitter/messages.html',
+                      {'received': received, 'sent': sent})
+
+
+class ComposeMessageView(LoginRequiredMixin, CreateView):
+    model = models.Message
+    form_class = forms.MessageForm
+    success_url = reverse_lazy('twitter:messages')
+
+    def form_valid(self, form):
+        form.instance.sender = self.request.user
+        return super().form_valid(form)
+
+
+class MessageDetailView(LoginRequiredMixin, views.View):
+    def get(self, request, pk):
+        query_set = models.Message.objects.filter(
+            blocked=False).filter(
+            Q(recipient=request.user) | Q(sender=request.user))
+        msg = get_object_or_404(query_set, pk=pk)
+        if msg.recipient.pk == request.user.pk:
+            msg.read = True
+            msg.save()
+        return render(request, 'twitter/message_detail.html',
+                      {'msg': msg})

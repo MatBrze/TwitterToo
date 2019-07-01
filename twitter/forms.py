@@ -33,3 +33,12 @@ class AddCommentForm(forms.ModelForm):
         model = models.Comment
         fields = ['content']
         labels = False
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = models.Message
+        fields = ['title', 'content', 'recipient']
+        widgets = {
+            'content': forms.Textarea()
+        }

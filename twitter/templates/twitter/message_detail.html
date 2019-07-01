@@ -1,0 +1,16 @@
+{% extends 'twitter/base.html' %}
+{% load avatar_tags %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                FROM: <small class="text-muted">{% avatar msg.sender 25 class="rounded-circle" id="user_avatar" %} {{ msg.sender }}</small>
+                TO: <small class="text-muted">{% avatar msg.recipient 25 class="rounded-circle" id="user_avatar" %} {{ msg.recipient }}</small>
+                <small class="text-muted">{{ msg.date_send|date:"F d, Y" }}</small>
+            </div>
+            <h2 class="article-title">{{ msg.title }}</h2>
+            <p class="article-content">{{ msg.content }}</p>
+        </div>
+    </article>
+{% endblock content %}
