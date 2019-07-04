@@ -10,10 +10,10 @@
                 <small class="text-muted">{{ tweet.creation_date|date:"F d, Y" }}</small>
             </div>
             <p class="article-content">{{ tweet.content }}</p>
-            <form action="" method="POST">
+            <form action="#" method="POST">
                 {% csrf_token %}
                     <small class="text-muted">Add comment:</small>
-                    <small class="text-muted">{{ add_comment|crispy }}</small>
+                    <small class="text-muted">{{ add_comment_form|crispy }}</small>
                     <button class="btn btn-outline-info" type="submit">Add</button>
             </form>
             <div>

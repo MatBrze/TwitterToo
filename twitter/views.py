@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django import views
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.models import User
-
 from twitter import models
 from twitter import forms
 from .forms import UserRegisterForm
@@ -41,9 +41,10 @@ class RegisterView(views.View):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, f'{user} Konto zostało utworzone! Zaloguj się')
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'{username} Konto zostało utworzone! Zaloguj się')
             return redirect('twitter:login')
+
         return render(request, 'twitter/register.html', {'form': form})
 
 
@@ -59,9 +60,9 @@ class TweetDetailView(LoginRequiredMixin, views.View):
 
     def get(self, request, pk):
         tweet = models.Tweet.objects.get(pk=pk)
-        add_comment = forms.AddCommentForm()
+        add_comment_form = forms.AddCommentForm()
         return render(request, 'twitter/tweet_detail.html',
-                      {'tweet': tweet, 'add_comment': add_comment})
+                      {'tweet': tweet, 'add_comment_form': add_comment_form})
 
     def post(self, request, pk):
         form = forms.AddCommentForm(request.POST)
@@ -72,6 +73,7 @@ class TweetDetailView(LoginRequiredMixin, views.View):
                 content=content, author=request.user, tweet=tweet)
             new_comment.save()
             form = forms.AddCommentForm()
+
         return render(request, 'twitter/tweet_detail.html',
                       {'tweet': tweet, 'add_comment': form})
 
@@ -87,6 +89,7 @@ class AuthorDetailView(views.View):
 
 
 class MessageListView(LoginRequiredMixin, views.View):
+
     def get(self, request):
         received = models.Message.objects.filter(
             recipient=request.user, blocked=False).order_by('-date_send')
@@ -107,6 +110,7 @@ class ComposeMessageView(LoginRequiredMixin, CreateView):
 
 
 class MessageDetailView(LoginRequiredMixin, views.View):
+
     def get(self, request, pk):
         query_set = models.Message.objects.filter(
             blocked=False).filter(
@@ -115,5 +119,6 @@ class MessageDetailView(LoginRequiredMixin, views.View):
         if msg.recipient.pk == request.user.pk:
             msg.read = True
             msg.save()
+
         return render(request, 'twitter/message_detail.html',
                       {'msg': msg})

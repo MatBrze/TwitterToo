@@ -1,6 +1,4 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-
 from twitter import views
 
 app_name = 'twitter'
@@ -14,9 +12,9 @@ urlpatterns = [
          name='tweet-detail'),
     path('user/<int:pk>/', views.AuthorDetailView.as_view(),
          name='author-detail'),
-    path('messages/', views.MessageListView.as_view(), name='messages'),
-    path('messages/<int:pk>', views.MessageDetailView.as_view(),
+    path('message/', views.MessageListView.as_view(), name='messages'),
+    path('message/<int:pk>', views.MessageDetailView.as_view(),
          name='message-detail'),
-    path('messages/new/', views.ComposeMessageView.as_view(),
+    path('message/new/', views.ComposeMessageView.as_view(),
          name='compose-message'),
 ]
