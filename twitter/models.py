@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
-
 TWITTER_MAXIMUM_TWEET_LENGTH = 280
 TWITTER_MAXIMUM_COMMENT_LENGTH = 60
 TWITTER_MAXIMUM_MSG_LENGTH = 64
