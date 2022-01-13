@@ -3,7 +3,7 @@ django-appconf==1.0.3
 django-avatar==4.1.0
 django-crispy-forms==1.7.2
 Faker==1.0.6
-Pillow==6.0.0
+Pillow==9.0.0
 python-dateutil==2.8.0
 pytz==2019.1
 six==1.12.0
